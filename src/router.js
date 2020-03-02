@@ -10,7 +10,10 @@ const routes = [
   {
     path: "/",
     name: "AdminScreen",
-    component: AdminScreen
+    component: AdminScreen,
+    meta: {
+      authRequired: true
+    }
   },
   {
     path: "/login",
@@ -25,5 +28,17 @@ const router = new Router({
 });
 
 // create a navigation guard here //
+router.beforeEach((to, from, next) => {
+  const authRequired = to.matched.some(route => route.meta.authRequired);
+  if (authRequired === false) {
+    return next();
+  }
+  console.log(store.getters["isLoggedIn"]);
+  if (store.getters["isLoggedIn"] === false) {
+    next("/login");
+  } else {
+    next();
+  }
+});
 
 export default router;

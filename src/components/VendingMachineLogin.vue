@@ -26,6 +26,9 @@ export default {
   methods: {
     handleLogin() {
       // we'll dispatch the login and reroute here //
+      this.$store.dispatch("logIn").then(() => {
+        this.$router.push(this.$route.query.redirect || "/");
+      });
     }
   }
 };
